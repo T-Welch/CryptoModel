@@ -11,20 +11,20 @@ public class CryptoModel {
     public final static String POLYGON_API_KEY = "lNnIsZpfQFzjclMQKmfxpNXGFALupHGt";
     static JsonElement jse = null;
 
-    public static URL constructURL(String ticker, int timespanMultiplier, String timespan, String dateRange)
+    public static URL constructURL(String ticker, String startDate, String endDate)
             throws MalformedURLException {
-        URL formedURL = new URL("https://api.polygon.io/v2/aggs/ticker/X:"
+        URL formedURL = new URL("https://api.polygon.io/v2/aggs/ticker/"
                 + ticker + "/range/"
-                + timespanMultiplier + "/"
-                + timespan + "/"
-                + dateRange
+                + "1" + "/"
+                + "day" + "/"
+                + startDate + "/" + endDate
                 + "?apiKey=" + POLYGON_API_KEY);
         return formedURL;
     }
 
 
 
-    public static JsonElement queryAPI(URL formedURL) {
+    public JsonElement queryAPI(URL formedURL) {
         
         try {
             // open connection
@@ -39,9 +39,6 @@ public class CryptoModel {
             // close stream
             inputStream.close();
             bufferedReader.close();
-
-            //System.out.println("\r");
-            //System.out.println(jse);
 
         } catch (java.io.IOException ioe) {
             ioe.printStackTrace();
@@ -88,14 +85,13 @@ public class CryptoModel {
         // .getAsJsonObject().get("l").getAsDouble();
         return getValueFromJSON("l");
     }
-    public static double getPeriodNumberTransactions() {
+    public static String getPeriodNumberTransactions() {
         // double periodNumberTransactions = 0;
         // periodNumberTransactions = jse.getAsJsonObject().get("results")
         // .getAsJsonArray().get(0)
         // .getAsJsonObject().get("n").getAsDouble();
 
-        return getValueFromJSON("n");
-
+        return String.format("%.0f", getValueFromJSON("n"));
     }
 
     public static double getPeriodOpen() {
@@ -180,18 +176,18 @@ return total;
 
 
 
-    public static void main(String[] args) throws MalformedURLException {
-        jse = queryAPI(constructURL("BTCUSD", 1, "day", "2022-02-02/2022-02-02"));
+    // public static void main(String[] args) throws MalformedURLException {
+    //     jse = queryAPI(constructURL("BTCUSD", 1, "day", "2022-02-02/2022-02-02"));
 
 
-        System.out.println("Time period high: $" + getPeriodATH());
-        System.out.println("Time period low: $" + getPeriodATL());
-        System.out.println("Time period opening price: $" + getPeriodOpen());
-        System.out.println("Time period closing price: $" + getPeriodClose());
-        System.out.println("Number of transactions in the time period: " + getPeriodNumberTransactions());
+    //     System.out.println("Time period high: $" + getPeriodATH());
+    //     System.out.println("Time period low: $" + getPeriodATL());
+    //     System.out.println("Time period opening price: $" + getPeriodOpen());
+    //     System.out.println("Time period closing price: $" + getPeriodClose());
+    //     System.out.println("Number of transactions in the time period: " + getPeriodNumberTransactions());
 
 
 
-    }
+    // }
 
 }

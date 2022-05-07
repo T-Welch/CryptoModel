@@ -3,6 +3,7 @@ import javafx.fxml.Initializable;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 import javafx.collections.FXCollections;
@@ -53,6 +54,28 @@ public class CryptoController implements Initializable{
     @FXML
     private void handleButtonAction(ActionEvent e) {
         CryptoModel model = new CryptoModel();
+
+        lblCurrency.setText("Currency: USD");
+        String ticker = (String) cbCurrencySelector.getValue();
+        System.out.println(ticker);
+        String startDate = dpStartDate.getValue().toString();
+        String endDate = dpEndDate.getValue().toString();
+        try {
+            model.queryAPI(model.constructURL(ticker, startDate, endDate));
+        } catch (MalformedURLException e1) {
+        }
+        lblTradeVolume.setText("Trade Volume: " + model.getPeriodNumberTransactions());
+        lblPeriodHigh.setText("Period High: $" + model.getPeriodATH());
+        lblPeriodLow.setText("Period Low: $" + model.getPeriodATL());
+        lblPeriodOpen.setText("Period Open: $" + model.getPeriodOpen());
+        lblPeriodClose.setText("Period Close: $" + model.getPeriodClose());
+
+
+
+
+
+
+
     }
 
     @Override
