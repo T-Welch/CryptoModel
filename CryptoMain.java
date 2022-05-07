@@ -16,6 +16,7 @@ public class CryptoMain extends Application {
         stage.setScene(scene);
         stage.setTitle("Wx - Trevor Welch");
         stage.show();
+        
     }
 
     /**

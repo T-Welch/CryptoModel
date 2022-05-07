@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URLEncoder;
@@ -39,7 +40,7 @@ public class CryptoModel {
             inputStream.close();
             bufferedReader.close();
 
-            System.out.println("\r");
+            //System.out.println("\r");
             //System.out.println(jse);
 
         } catch (java.io.IOException ioe) {
@@ -99,6 +100,81 @@ public class CryptoModel {
 
     public static double getPeriodOpen() {
         return getValueFromJSON("o");
+    }
+    public static String[] getTickers() throws IOException {
+        URL url = new URL(
+            "https://api.polygon.io/v3/reference/tickers?market=crypto&active=true&sort=ticker&order=asc&limit=1000&apiKey=lNnIsZpfQFzjclMQKmfxpNXGFALupHGt");
+
+    // open connection
+
+    InputStream inputStream = url.openStream();
+    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+
+    // pass in result to parser
+
+    JsonElement jse = new JsonParser().parse(bufferedReader);
+
+    // close stream
+    inputStream.close();
+    bufferedReader.close();
+
+    // System.out.println("----------------------------------------------------------------");
+    int count = jse.getAsJsonObject().get("count").getAsInt();
+    jse = jse.getAsJsonObject().get("results");
+    int total = 0;
+
+    for (int i = 0; i < count; i++) {
+
+        String str = jse.getAsJsonArray().get(i).getAsJsonObject().get("currency_symbol").getAsString();
+        if (str.equals("USD")) {
+            total++;
+        }
+
+    }
+    int testInt = 0;
+    String tickers[] = new String[total];
+    for (int i = 0; i < count; i++) {
+        String str = jse.getAsJsonArray().get(i).getAsJsonObject().get("currency_symbol").getAsString();
+        if (str.equals("USD")) {
+            tickers[testInt] = jse.getAsJsonArray().get(i).getAsJsonObject().get("ticker").getAsString();
+            testInt++;
+        }
+
+    }
+    return tickers;
+    }
+
+    public static int numberOfTickers() throws IOException {
+        URL url = new URL(
+            "https://api.polygon.io/v3/reference/tickers?market=crypto&active=true&sort=ticker&order=asc&limit=1000&apiKey=lNnIsZpfQFzjclMQKmfxpNXGFALupHGt");
+
+    // open connection
+
+    InputStream inputStream = url.openStream();
+    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+
+    // pass in result to parser
+
+    JsonElement jse = new JsonParser().parse(bufferedReader);
+
+    // close stream
+    inputStream.close();
+    bufferedReader.close();
+
+    // System.out.println("----------------------------------------------------------------");
+    int count = jse.getAsJsonObject().get("count").getAsInt();
+    jse = jse.getAsJsonObject().get("results");
+    int total = 0;
+
+    for (int i = 0; i < count; i++) {
+
+        String str = jse.getAsJsonArray().get(i).getAsJsonObject().get("currency_symbol").getAsString();
+        if (str.equals("USD")) {
+            total++;
+        }
+    }
+
+return total;
     }
 
 
