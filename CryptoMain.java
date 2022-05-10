@@ -14,7 +14,7 @@ public class CryptoMain extends Application {
         Scene scene = new Scene(root);
         
         stage.setScene(scene);
-        stage.setTitle("Wx - Trevor Welch");
+        stage.setTitle("CryptoModel - Trevor Welch - CSCI13 Final Project");
         stage.show();
         
     }

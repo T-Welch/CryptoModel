@@ -57,29 +57,43 @@ public class CryptoController implements Initializable{
 
     @FXML
     private void handleButtonAction(ActionEvent e) throws MalformedURLException {
+        String startDate;
+        String endDate;
         CryptoModel model = new CryptoModel();
 
         
         String ticker = (String) cbCurrencySelector.getValue();
         System.out.println(ticker);
-        String startDate = dpStartDate.getValue().toString();
-        String endDate = dpEndDate.getValue().toString();
+        try {
+            startDate = dpStartDate.getValue().toString();
+            endDate = dpEndDate.getValue().toString();
 
-        model.queryAPI(model.constructURL(ticker, startDate, endDate));
-
-        if (model.isGoodQuery()) {
-            lblCurrency.setText("Currency: USD");
-            lblTradeVolume.setText("Trade Volume: " + model.getPeriodNumberTransactions());
-            lblPeriodHigh.setText("Period High: $" + model.getPeriodATH());
-            lblPeriodLow.setText("Period Low: $" + model.getPeriodATL());
-            lblPeriodOpen.setText("Period Open: $" + model.getPeriodOpen());
-            lblPeriodClose.setText("Period Close: $" + model.getPeriodClose());
-            
-        } else {
-            Alert alert = new Alert(AlertType.ERROR, "You have entered invalid data. Some common errors may be:\nDate is set to today\nDate is set > 2 years previous\nDate is set to the future\nSelected currency did not exist on one more more of the selected days", ButtonType.OK);
+            model.queryAPI(model.constructURL(ticker, startDate, endDate));
+        
+            if (model.isGoodQuery()) {
+                lblCurrency.setText("Currency: USD");
+                lblTradeVolume.setText("Trade Volume: " + model.getPeriodNumberTransactions());
+                lblPeriodHigh.setText("Period High: $" + model.getPeriodATH());
+                lblPeriodLow.setText("Period Low: $" + model.getPeriodATL());
+                lblPeriodOpen.setText("Period Open: $" + model.getPeriodOpen());
+                lblPeriodClose.setText("Period Close: $" + model.getPeriodClose());
+                
+            } else {
+                Alert alert = new Alert(AlertType.ERROR, "You have entered invalid data. Some common errors may be:\nDate is set to today\nDate is set > 2 years previous\nDate is set to the future\nSelected currency did not exist on one more more of the selected days\nor you did not select a currency", ButtonType.OK);
+                alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+                alert.show();
+            }
+        } catch (Exception f) {
+            Alert alert = new Alert(AlertType.ERROR, "You have entered invalid data in the date field", ButtonType.OK);
             alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
             alert.show();
+            
         }
+
+
+
+
+
 
 
 
