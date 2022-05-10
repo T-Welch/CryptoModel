@@ -10,18 +10,25 @@ import com.google.gson.*;
 public class CryptoModel {
     public final static String POLYGON_API_KEY = "lNnIsZpfQFzjclMQKmfxpNXGFALupHGt";
     static JsonElement jse = null;
+    static URL queryURL = null;
 
-    public static URL constructURL(String ticker, String startDate, String endDate)
-            throws MalformedURLException {
-        URL formedURL = new URL("https://api.polygon.io/v2/aggs/ticker/"
-                + ticker + "/range/"
-                + "1" + "/"
-                + "day" + "/"
-                + startDate + "/" + endDate
-                + "?apiKey=" + POLYGON_API_KEY);
-        return formedURL;
+    public static URL constructURL(String ticker, String startDate, String endDate) {
+        URL formedURL;
+        try {
+            formedURL = new URL("https://api.polygon.io/v2/aggs/ticker/"
+                    + ticker + "/range/"
+                    + "1" + "/"
+                    + "day" + "/"
+                    + startDate + "/" + endDate
+                    + "?apiKey=" + POLYGON_API_KEY);
+                    System.out.println(formedURL);
+                    queryURL = formedURL;
+                    return formedURL;
+        } catch (MalformedURLException e) {
+            return null;
+        }
+
     }
-
 
 
     public JsonElement queryAPI(URL formedURL) {
@@ -41,10 +48,19 @@ public class CryptoModel {
             bufferedReader.close();
 
         } catch (java.io.IOException ioe) {
-            ioe.printStackTrace();
         }
         
         return jse;
+    }
+
+    public boolean isGoodQuery() {
+        System.out.println(jse.getAsJsonObject().get("status"));
+        System.out.println(jse.getAsJsonObject().get("resultsCount"));
+        if ( jse.getAsJsonObject().get("status").getAsString().equals("OK") && jse.getAsJsonObject().get("resultsCount").getAsInt() > 0 ) {
+            return true;
+        } else 
+            return false;
+
     }
 
 
@@ -69,7 +85,7 @@ public class CryptoModel {
         return getValueFromJSON("h");
     }
 
-    public static double getPeriodClose() {
+    public static double getPeriodClose() throws NullPointerException{
         // double periodClosePrice = 0;
 
         // periodClosePrice = jse.getAsJsonObject().get("results")
@@ -78,14 +94,15 @@ public class CryptoModel {
         return getValueFromJSON("c");
     }
 
-    public static double getPeriodATL() {
+    public static double getPeriodATL() throws NullPointerException{
         // double periodATL = 0;
         // periodATL = jse.getAsJsonObject().get("results")
         // .getAsJsonArray().get(0)
         // .getAsJsonObject().get("l").getAsDouble();
         return getValueFromJSON("l");
+        // return String.format("%.2f", getValueFromJSON("l"));
     }
-    public static String getPeriodNumberTransactions() {
+    public static String getPeriodNumberTransactions() throws NullPointerException{
         // double periodNumberTransactions = 0;
         // periodNumberTransactions = jse.getAsJsonObject().get("results")
         // .getAsJsonArray().get(0)
@@ -94,7 +111,7 @@ public class CryptoModel {
         return String.format("%.0f", getValueFromJSON("n"));
     }
 
-    public static double getPeriodOpen() {
+    public static double getPeriodOpen() throws NullPointerException{
         return getValueFromJSON("o");
     }
     public static String[] getTickers() throws IOException {

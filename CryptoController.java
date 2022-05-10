@@ -10,13 +10,17 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Region;
+
 
 
 public class CryptoController implements Initializable{
@@ -52,23 +56,33 @@ public class CryptoController implements Initializable{
     private Label lblPeriodClose;
 
     @FXML
-    private void handleButtonAction(ActionEvent e) {
+    private void handleButtonAction(ActionEvent e) throws MalformedURLException {
         CryptoModel model = new CryptoModel();
 
-        lblCurrency.setText("Currency: USD");
+        
         String ticker = (String) cbCurrencySelector.getValue();
         System.out.println(ticker);
         String startDate = dpStartDate.getValue().toString();
         String endDate = dpEndDate.getValue().toString();
-        try {
-            model.queryAPI(model.constructURL(ticker, startDate, endDate));
-        } catch (MalformedURLException e1) {
+
+        model.queryAPI(model.constructURL(ticker, startDate, endDate));
+
+        if (model.isGoodQuery()) {
+            lblCurrency.setText("Currency: USD");
+            lblTradeVolume.setText("Trade Volume: " + model.getPeriodNumberTransactions());
+            lblPeriodHigh.setText("Period High: $" + model.getPeriodATH());
+            lblPeriodLow.setText("Period Low: $" + model.getPeriodATL());
+            lblPeriodOpen.setText("Period Open: $" + model.getPeriodOpen());
+            lblPeriodClose.setText("Period Close: $" + model.getPeriodClose());
+            
+        } else {
+            Alert alert = new Alert(AlertType.ERROR, "You have entered invalid data. Some common errors may be:\nDate is set to today\nDate is set > 2 years previous\nDate is set to the future\nSelected currency did not exist on one more more of the selected days", ButtonType.OK);
+            alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+            alert.show();
         }
-        lblTradeVolume.setText("Trade Volume: " + model.getPeriodNumberTransactions());
-        lblPeriodHigh.setText("Period High: $" + model.getPeriodATH());
-        lblPeriodLow.setText("Period Low: $" + model.getPeriodATL());
-        lblPeriodOpen.setText("Period Open: $" + model.getPeriodOpen());
-        lblPeriodClose.setText("Period Close: $" + model.getPeriodClose());
+
+
+
 
 
 
