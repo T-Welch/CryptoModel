@@ -31,7 +31,7 @@ public class CryptoModel {
     }
 
 
-    public JsonElement queryAPI(URL formedURL) {
+    public void queryAPI(URL formedURL) {
         
         try {
             // open connection
@@ -50,7 +50,6 @@ public class CryptoModel {
         } catch (java.io.IOException ioe) {
         }
         
-        return jse;
     }
 
     public boolean isGoodQuery() {

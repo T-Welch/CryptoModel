@@ -57,8 +57,8 @@ public class CryptoController implements Initializable{
 
     @FXML
     private void handleButtonAction(ActionEvent e) throws MalformedURLException {
-        String startDate;
-        String endDate;
+        String startDate = "";
+        String endDate = "";
         CryptoModel model = new CryptoModel();
 
         
