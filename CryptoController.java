@@ -63,7 +63,7 @@ public class CryptoController implements Initializable{
 
         
         String ticker = (String) cbCurrencySelector.getValue();
-        System.out.println(ticker);
+        //System.out.println(ticker);
         try {
             startDate = dpStartDate.getValue().toString();
             endDate = dpEndDate.getValue().toString();

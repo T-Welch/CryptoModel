@@ -21,7 +21,7 @@ public class CryptoModel {
                     + "day" + "/"
                     + startDate + "/" + endDate
                     + "?apiKey=" + POLYGON_API_KEY);
-                    System.out.println(formedURL);
+                    //System.out.println(formedURL);
                     queryURL = formedURL;
                     return formedURL;
         } catch (MalformedURLException e) {
@@ -54,8 +54,8 @@ public class CryptoModel {
     }
 
     public boolean isGoodQuery() {
-        System.out.println(jse.getAsJsonObject().get("status"));
-        System.out.println(jse.getAsJsonObject().get("resultsCount"));
+        // System.out.println(jse.getAsJsonObject().get("status"));
+        // System.out.println(jse.getAsJsonObject().get("resultsCount"));
         if ( jse.getAsJsonObject().get("status").getAsString().equals("OK") && jse.getAsJsonObject().get("resultsCount").getAsInt() > 0 ) {
             return true;
         } else 
