@@ -39,7 +39,7 @@ public void testGetPeriodLow() {
     assertEquals(31703.15, validModel.getPeriodATL(), .01);
 }
 @Test
-public void testGetTradVolume() {
+public void testGetTradeVolume() {
     CryptoModel validModel = new CryptoModel();
     validModel.queryAPI(validModel.constructURL("X:BTCUSD", "2021-07-22", "2021-07-22"));
     assertEquals("282603", validModel.getPeriodNumberTransactions());
