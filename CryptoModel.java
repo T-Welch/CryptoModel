@@ -8,7 +8,7 @@ import java.net.URL;
 import com.google.gson.*;
 
 public class CryptoModel {
-    public final static String POLYGON_API_KEY = "lNnIsZpfQFzjclMQKmfxpNXGFALupHGt";
+    public final static String POLYGON_API_KEY = "";
     static JsonElement jse = null;
     static URL queryURL = null;
 
